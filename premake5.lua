@@ -1,7 +1,8 @@
 project "GLFW"
 	kind "StaticLib"
 	language "C"
-
+	cdialect "C17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -35,7 +36,6 @@ project "GLFW"
 
 	filter "system:windows"
 		systemversion "latest"
-		staticruntime "On"
 
 		files
 		{
@@ -57,25 +57,22 @@ project "GLFW"
 			"_CRT_SECURE_NO_WARNINGS"
 		}
 
-	filter { "system:windows", 
-			"configurations:Debug", 
-			"configurations:Debug-AS", 
-			"configurations:Release", 
-			"configurations:Dist" }	
-		buildoptions "/MT"
-
 	filter "configurations:Debug"
 		symbols "on"
+		runtime "Debug"
 
 	filter "configurations:Debug-AS"
 		symbols "on"
 		sanitize { "Address" }
 		runtimechecks "Off"
 		incrementallink "Off"
+		runtime "Debug"
 
 	filter "configurations:Release"
 		optimize "speed"
+		runtime "Release"
 
     filter "configurations:Dist"
 		optimize "speed"
         symbols "off"
+		runtime "Release"
